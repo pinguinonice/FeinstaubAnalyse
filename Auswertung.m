@@ -17,6 +17,9 @@ start = datetime(answer{1},'InputFormat','yyyy-MM-dd'); % Startzeit
 ende =  datetime(answer{2},'InputFormat','yyyy-MM-dd'); % Endzeit
 sensor = answer{3};
 %% Werte Leer Anlegen
+global Time;
+global PM10;
+global PM25;
 Time = [];
 PM10 = [];
 PM25 = [];
@@ -35,7 +38,7 @@ for i = 0:Anzahl
   Tag = start + i;
   
   % Herunterladen
-  url = strcat('http://www.madavi.de/sensor/data/data-esp8266-',sensor,'-',datestr(Tag,'yyyy-mm-dd'),'.csv');
+  url = strcat('https://www.madavi.de/sensor/data/data-esp8266-',sensor,'-',datestr(Tag,'yyyy-mm-dd'),'.csv');
     
   
   try % Falls Tag nicht geladen werden kann
@@ -85,8 +88,9 @@ global z1;
 global z2;
 global z3;
 global z4;
+global hFig;
 
-figure('units','normalized','outerposition',[0 0 1 1])
+hFig = figure('units','normalized','outerposition',[0 0 1 1]);
 z1 = subplot(2,2,1);
 plot(Time, PM10, 'b')
 hold on;
@@ -102,24 +106,26 @@ z2 = subplot(2,2,2);
 plot(Time, PM10, 'b')
 hold on;
 plot(Time, PM25,'r')
-ylim([0,20]);
+%ylim([0,20]);
+ylim([nanmean(PM10(PM10<200))-3*nanstd(PM10(PM10<200)),nanmean(PM10(PM10<200))+3*nanstd(PM10(PM10<200))]);
 xlabel('Zeit [GMT]')
 ylabel('\mu g/m^3')
 set(gca,'xGrid','on')
 title('Datenausschnitt')
 
 z3 = subplot(2,2,3);
-Filter = fspecial('average',[1,9]);
+Filter = fspecial('average',[1,floor(length(PM10)/200)]);
 PM10blur = conv(PM10,Filter,'same');
 PM25blur = conv(PM25,Filter,'same');
 plot(Time, PM10blur, 'b')
 hold on;
 plot(Time, PM25blur,'r')
-ylim([0,20]);
+%ylim([0,20]);
+ylim([nanmean(PM10(PM10<200))-2*nanstd(PM10(PM10<200)),nanmean(PM10(PM10<200))+2*nanstd(PM10(PM10<200))]);
 xlabel('Zeit [GMT]')
 ylabel('\mu g/m^3')
 set(gca,'xGrid','on')
-title('Daten mit 9er Boxfilter geglättet')
+title(strcat('Daten mit',{' '},num2str(floor(length(PM10)/200)),'er Boxfilter geglättet'))
 
 z4 = subplot(2,2,4);
 yyaxis right
@@ -136,6 +142,7 @@ title('Weitere Daten')
 
 Anzeige3
 
-
+% nanstd(PM10(PM10<200))
+% nanmean(PM10(PM10<200))
 
 

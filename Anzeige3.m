@@ -135,41 +135,60 @@ global z1;
 global z2;
 global z3;
 global z4;
+global Time
     
 
       switch get(get(handles.Panel,'SelectedObject'),'Tag')
 
       case 'Alles',  set(z1,'YLimMode', 'Auto');
-                     set(z1,'XLimMode', 'Auto');
-               
-                     set(z2,'XLimMode', 'Auto');
-                     
-                     set(z3,'XLimMode', 'Auto');
-                     
+                     filterung( Time(1), Time(end));
+                     set(z1,'XLimMode', 'Auto');               
+                     set(z2,'XLimMode', 'Auto');                     
+                     set(z3,'XLimMode', 'Auto');                     
                      set(z4,'XLimMode', 'Auto');
+                     
+                     
       case 'h24',    set(z1,'YLimMode', 'Auto');
-                     set(z1,'xlim',[datenum(datetime('now')-1), datenum(datetime('now'))]);
-                     
-                     set(z2,'xlim',[datenum(datetime('now')-1), datenum(datetime('now'))]);
-                     
+                     filterung( datetime('now')-1, datetime('now') );
+                     if verLessThan('matlab','9.2')
+                     set(z1,'xlim',[datenum(datetime('now')-1), datenum(datetime('now'))]);                               
+                     set(z2,'xlim',[datenum(datetime('now')-1), datenum(datetime('now'))]);                    
                      set(z3,'xlim',[datenum(datetime('now')-1), datenum(datetime('now'))]);
-                     
                      set(z4,'xlim',[datenum(datetime('now')-1), datenum(datetime('now'))]);
+                     else                 
+                     set(z1,'xlim',[datetime('now')-1, datetime('now')]);                               
+                     set(z2,'xlim',[datetime('now')-1, datetime('now')]);                    
+                     set(z3,'xlim',[datetime('now')-1, datetime('now')]); 
+                     set(z4,'xlim',[datetime('now')-1, datetime('now')]);
+                     end
+                     
+                     
       case 'Woche',  set(z1,'YLimMode', 'Auto');
-                     set(z1,'xlim',[datenum(datetime('now')-7), datenum(datetime('now'))]); 
+                     filterung( datetime('now')-7, datetime('now') );
+                     if verLessThan('matlab','9.2')
+                     set(z1,'xlim',[datenum(datetime('now')-7), datenum(datetime('now'))]);                               
+                     set(z2,'xlim',[datenum(datetime('now')-7), datenum(datetime('now'))]);                    
+                     set(z3,'xlim',[datenum(datetime('now')-7), datenum(datetime('now'))]);
+                     set(z4,'xlim',[datenum(datetime('now')-7), datenum(datetime('now'))]);
+                     else                 
+                     set(z1,'xlim',[datetime('now')-7, datetime('now')]);                               
+                     set(z2,'xlim',[datetime('now')-7, datetime('now')]);                    
+                     set(z3,'xlim',[datetime('now')-7, datetime('now')]); 
+                     set(z4,'xlim',[datetime('now')-7, datetime('now')]);
+                     end 
                      
-                     set(z2,'xlim',[datenum(datetime('now')-7), datenum(datetime('now'))]); 
-                    
-                     set(z3,'xlim',[datenum(datetime('now')-7), datenum(datetime('now'))]); 
-                     
-                     set(z4,'xlim',[datenum(datetime('now')-7), datenum(datetime('now'))]); 
       case 'VonBis', set(z1,'YLimMode', 'Auto');
-                     set(z1,'xlim',[datenum(datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd')), datenum(datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd'))]);   
-                     
-                     set(z2,'xlim',[datenum(datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd')), datenum(datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd'))]);   
-                     
-                     set(z3,'xlim',[datenum(datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd')), datenum(datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd'))]);   
-                   
+                     filterung( datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd'), datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd') );
+                     if verLessThan('matlab','9.2')   
+                     set(z1,'xlim',[datenum(datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd')), datenum(datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd'))]);           
+                     set(z2,'xlim',[datenum(datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd')), datenum(datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd'))]);                      
+                     set(z3,'xlim',[datenum(datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd')), datenum(datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd'))]);                    
                      set(z4,'xlim',[datenum(datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd')), datenum(datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd'))]);   
-        
+                     else
+                     set(z1,'xlim',[datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd'), datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd')]);           
+                     set(z2,'xlim',[datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd'), datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd')]);                      
+                     set(z3,'xlim',[datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd'), datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd')]);                    
+                     set(z4,'xlim',[datetime(get(handles.Starte,'String'),'InputFormat','yyyy-MM-dd'), datetime(get(handles.Ende,'String'),'InputFormat','yyyy-MM-dd')]);   
+                     end
+                     
       end
